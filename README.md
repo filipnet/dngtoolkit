@@ -46,8 +46,8 @@ The default parameters are as follows, but can be customized via Settings.xml
 
 ## HISTORY
 
-2020-04-18 - Added to BSD 3-Clause License, Initial creation of README.txt, LICENSE.txt
+2020-04-18 - Added to BSD 3-Clause License, Initial creation of README.md, LICENSE
 
 ## LICENSE
 
-DNG ToolKit and all individual scripts are under the BSD 3-Clause license unless explicitly noted otherwise. Please refer to the LICENSE.TXT
+DNG ToolKit and all individual scripts are under the BSD 3-Clause license unless explicitly noted otherwise. Please refer to the LICENSE
