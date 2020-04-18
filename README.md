@@ -1,6 +1,6 @@
 # DNG ToolKit
 
-Automatic conversion of multiple RAW files to DNG format with Adobe DNG Converter via PowerShell 
+Automatic conversion of multiple RAW/ARW files to DNG format with Adobe DNG Converter via PowerShell 
 
 ## REQUIREMENTS
 
@@ -30,10 +30,12 @@ The syntax of the Adobe DNG Converter command line arguments can be found here:
 https://wwwimages2.adobe.com/content/dam/acom/en/products/photoshop/pdfs/dng_commandline.pdf
 
 The default parameters are as follows, but can be customized via Settings.xml
+```
  -u Output uncompressed DNG files
  -p1 Set JPEG preview size to medium size (default)
  -fl Embed fast load data
  -cr7.1 Set Camera Raw compatibility to 7.1 and later
+```
 
 ## DIRECTORIES
 
