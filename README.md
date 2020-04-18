@@ -22,9 +22,9 @@ Set the following variable of Settings.xml to $true - <testing>$true</testing>
 
 This PowerShell script supports Lightroom 6.14 (and below) on-premise users. Several actions are available.
 
-1.) Move or Copy RAW files from an external storage device to subfolders sorted by date of recording
-2.) Automatic convertation of the imported folders into DNG format via command line
-3.) Automatic deletion of rejected and deleted ARW files (by Lightroom) in the working directory
+- Move or Copy RAW files from an external storage device to subfolders sorted by date of recording
+- Automatic convertation of the imported folders into DNG format via command line
+- Automatic deletion of rejected and deleted ARW files (by Lightroom) in the working directory
 
 The syntax of the Adobe DNG Converter command line arguments can be found here:
 https://wwwimages2.adobe.com/content/dam/acom/en/products/photoshop/pdfs/dng_commandline.pdf
@@ -37,12 +37,12 @@ The default parameters are as follows, but can be customized via Settings.xml
 
 ## DIRECTORIES
 
-DNGToolKit.ps1 - The main PowerShell script with the program logic
-Settings.xml - Configuration file to adapt to the own needs and system environment
-DNGToolkit.bat - The start script that skips the PowerShell execution policy
-Library.ps1 - Functions required by the main script have been swapped out due to readability
-README.txt - The manual for this PowerShell Script
-LICENSE.txt - The license notes for this PowerShell script
+- DNGToolKit.ps1 - The main PowerShell script with the program logic
+- Settings.xml - Configuration file to adapt to the own needs and system environment
+- DNGToolkit.bat - The start script that skips the PowerShell execution policy
+- Library.ps1 - Functions required by the main script have been swapped out due to readability
+- README.md - The manual for this PowerShell Script
+- LICENSE - The license notes for this PowerShell script
 
 ## HISTORY
 
