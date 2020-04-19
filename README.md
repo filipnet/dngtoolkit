@@ -1,5 +1,5 @@
 # DNG ToolKit
-<img  style="float: right" src="DNGToolKit.jpg" alt="Logo" width="200"/>
+<img src="DNGToolKit.jpg" alt="Logo" width="200"/>
 Automatic conversion of multiple RAW/ARW files to DNG format with Adobe DNG Converter via PowerShell 
 
 ## REQUIREMENTS
