@@ -28,11 +28,8 @@ For more information please refer to the README.TXT
 ./DNGToolKit.bat
 
 .NOTES
-Version:        1.0
 Author:         Benedikt Filip
-Creation Date:  11.04.2020
-Last Update: 	18.04.2020
-License: 		DNG ToolKit and all individual scripts are under the BSD 3-Clause license
+License:        DNG ToolKit and all individual scripts are under the BSD 3-Clause license
 
 .LINK
 https:/www.filipnet.de
