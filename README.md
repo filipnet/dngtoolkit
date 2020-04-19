@@ -1,5 +1,5 @@
 # DNG ToolKit
-![Logo](DNGToolKit.jpg)
+![Logo](DNGToolKit.jpg =200x)
 Automatic conversion of multiple RAW/ARW files to DNG format with Adobe DNG Converter via PowerShell 
 
 ## REQUIREMENTS
