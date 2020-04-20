@@ -79,7 +79,7 @@ param(
 
 If (!$FileDescription){ $FileDescription=$FileName }
 If (!$FilePath){ $FilePath=$PSScriptRoot }
-Write-Host -NoNewline "Check $($FileDescription) ($($FileName)): "
+Write-Host -NoNewline "Check $($FileDescription): "
 If (Test-Path $FilePath\$FileName) {
     Write-Host -ForegroundColor Green "PASSED "
 }else{
