@@ -49,7 +49,7 @@ if ($PSVersionTable.PSVersion.Major -gt 3)
 	Write-Host -ForegroundColor DarkBlue "PowerShell major version 3 is required, you use version $($PSVersionTable.PSVersion.Major)"
 }
 
-Check-FolderFile -FileName "DNGToolKit_library.ps1" -FileDescription "DNGToolKit function library"
+Check-FolderFile -FileName "Library.ps1" -FileDescription "DNGToolKit function library"
 Check-FolderFile -FileName "Settings.xml" -FileDescription "Configuration XML-file"
 Check-FolderFile -FileName "$dng_exec_path" -FileDescription "Adobe DNG Converter installation"
 Check-FolderFile -FilePath "$convert_root_path" -FileDescription "Convertation path"
