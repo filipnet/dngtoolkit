@@ -13,24 +13,20 @@ $convert_root_path = $ConfigFile.settings.folders.convertation
 $workplace_root_path = $ConfigFile.settings.folders.workplace
 $dng_exec_path = $ConfigFile.settings.dng.binary
 $dng_base_args = $ConfigFile.settings.dng.arguments
-$WhatIfPreference = $ConfigFile.settings.other.testing
+$WhatIfPreference = $false # $ConfigFile.settings.other.testing
 $disclaimer = $ConfigFile.settings.other.disclaimer
 
 <#
 .SYNOPSIS
 Automatic conversion of multiple RAW files to DNG format with Adobe DNG Converter via PowerShell 
-
 .DESCRIPTION
 This PowerShell script supports Lightroom 6.14 on-premise users. Several actions are available.
-For more information please refer to the README.TXT
-
+For more information please refer to the README.MD
 .EXAMPLE
 ./DNGToolKit.bat
-
 .NOTES
 Author:         Benedikt Filip
 License:        DNG ToolKit and all individual scripts are under the BSD 3-Clause license
-
 .LINK
 https:/www.filipnet.de
 #>
@@ -39,6 +35,14 @@ https:/www.filipnet.de
 Clear-Host
 Write-Host -BackgroundColor Blue "Check system environments on startup"
 Write-Host ""
+
+Write-Host -NoNewline "Check Whatif: "
+ if ($WhatIfPreference)
+{
+ 	Write-Host -ForegroundColor Green "ENABLED "
+}else{
+ 	Write-Host -ForegroundColor Yellow "DISABLED "
+}
 
 Write-Host -NoNewline "Check PowerShell Version: "
 if ($PSVersionTable.PSVersion.Major -gt 3)
@@ -49,11 +53,9 @@ if ($PSVersionTable.PSVersion.Major -gt 3)
 	Write-Host -ForegroundColor DarkBlue "PowerShell major version 3 is required, you use version $($PSVersionTable.PSVersion.Major)"
 }
 
-
-
 Check-FolderFile -FileName "Library.ps1" -FileDescription "DNGToolKit function library"
 Check-FolderFile -FileName "Settings.xml" -FileDescription "Configuration XML-file"
-Check-FolderFile -FilePath "$dng_exec_path" -FileDescription "Adobe DNG Converter installation"
+Check-FolderFile -FileName "$dng_exec_path" -FileDescription "Adobe DNG Converter installation"
 Check-FolderFile -FilePath "$convert_root_path" -FileDescription "Convertation path"
 Check-FolderFile -FilePath "$workplace_root_path" -FileDescription "Workplace path"
 
