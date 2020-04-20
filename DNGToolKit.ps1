@@ -11,7 +11,8 @@ $src_volume_import = $ConfigFile.settings.folders.sdcard
 $src_extension = $ConfigFile.settings.environment.extension
 $convert_root_path = $ConfigFile.settings.folders.convertation
 $workplace_root_path = $ConfigFile.settings.folders.workplace
-$dng_exec_path = $ConfigFile.settings.dng.binary
+$dng_exec_path = $ConfigFile.settings.dng.path
+$dng_exec_bin = $ConfigFile.settings.dng.binary
 $dng_base_args = $ConfigFile.settings.dng.arguments
 $WhatIfPreference = $false # $ConfigFile.settings.other.testing
 $disclaimer = $ConfigFile.settings.other.disclaimer
@@ -55,7 +56,7 @@ if ($PSVersionTable.PSVersion.Major -gt 3)
 
 Check-FolderFile -FileName "Library.ps1" -FileDescription "DNGToolKit function library"
 Check-FolderFile -FileName "Settings.xml" -FileDescription "Configuration XML-file"
-Check-FolderFile -FileName "$dng_exec_path" -FileDescription "Adobe DNG Converter installation"
+Check-FolderFile -FilePath "$dng_exec_path" -FileDescription "Adobe DNG Converter installation"
 Check-FolderFile -FilePath "$convert_root_path" -FileDescription "Convertation path"
 Check-FolderFile -FilePath "$workplace_root_path" -FileDescription "Workplace path"
 
@@ -151,7 +152,7 @@ do {
 					Write-Progress -Id 0 -Activity 'Converting ARW to DNG' -Status "Processing $($c1) of $($sourceFiles.count)" -CurrentOperation $file -PercentComplete (($c1/$sourceFiles.Count) * 100)
 					Start-Sleep -Milliseconds 200
 					$fullArgs = $dng_base_args + """$file"""
-					$process = start-process $dng_exec_path $fullArgs -Wait -PassThru
+					$process = start-process $dng_exec_bin $fullArgs -Wait -PassThru
 					if ($process.ExitCode -eq 0)
 					{
 						Write-Host -NoNewline "Converted $($file): "

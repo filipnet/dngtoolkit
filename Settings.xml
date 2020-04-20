@@ -9,6 +9,7 @@
         <extension>ARW</extension>
     </environment>
 	<dng>
+		<folder>C:\Program Files\Adobe\Adobe DNG Converter\</folder>
 		<binary>C:\Program Files\Adobe\Adobe DNG Converter\Adobe DNG Converter.exe</binary>
 		<arguments>-u -p1 -fl -cr7.1 </arguments>
 	</dng>
