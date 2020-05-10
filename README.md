@@ -46,10 +46,7 @@ The default parameters are as follows, but can be customized via Settings.xml
 - Library.ps1 - Functions required by the main script have been swapped out due to readability
 - README.md - The manual for this PowerShell Script
 - LICENSE - The license notes for this PowerShell script
-
-## HISTORY
-
-2020-04-18 - Added to BSD 3-Clause License, Initial creation of README.md, LICENSE
+- CHANGELOG.md - Change documentation of this software
 
 ## LICENSE
 

@@ -67,10 +67,10 @@ Write-Host "Press any key to continue ....."
 $x = $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 
 # Generate menu
-$OptionArray = @("Copy RAW/ARW-files from SD-Card","Move RAW/ARW-files from SD-Card","Convert ARW to DNG","Delete unused RAW/ARW-files","Quit and exit")
+$OptionArray = @("Copy RAW/ARW-files from SD-Card","Move RAW/ARW-files from SD-Card","Convert ARW to DNG","Delete unused RAW/ARW-files","Delete ARW from memory card (attention)","Quit and exit")
 $Banner = "
 DNGToolKit
-Version 1.0
+Latest version: https://github.com/filipnet/dngtoolkit
 Author: Benedikt Filip
 License: DNG ToolKit and all individual scripts are under the BSD 3-Clause license
 -----------------------------------------------------------"
@@ -201,6 +201,28 @@ do {
 			$x = $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 		}
 		4{
+			# Delete ARW from memory card
+			Write-Host -BackgroundColor Blue "Delete RAW/ARW-files from memory card"
+			$confirmation = Read-Host -Prompt 'Are you really sure you would like to delete all photos from your memory card? Type YES and press enter'
+
+			if ($confirmation -contains "YES") {
+				Write-Host "Your confirmation input was [$confirmation]"  so all photos from your memory card would be erased.
+				$arw = Get-ChildItem -r -force -include *.arw -ErrorAction SilentlyContinue $src_volume_import | Sort-Object -Unique
+				Clear-Host
+				foreach ($rawFile in $arw) {
+					Write-Host -NoNewline "$rawFile : "
+					Write-Host -ForegroundColor Red "DELETE"
+					remove-item $rawFile
+				}
+			} else {
+				Write-Warning -Message "Your input is not valid" 
+			}
+
+			[System.Media.SystemSounds]::Beep.Play();
+			Write-Host "Press any key to continue ....."
+			$x = $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+		}
+		5{
 			# Quit and exit
 			exit
 		}
@@ -209,4 +231,4 @@ do {
 			exit
 		}
 	}
-} while ($MenuResult -ne 4)
+} while ($MenuResult -ne 5)
