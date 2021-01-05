@@ -67,7 +67,7 @@ Write-Host "Press any key to continue ....."
 $x = $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 
 # Generate menu
-$OptionArray = @("Copy RAW/ARW-files from SD-Card","Move RAW/ARW-files from SD-Card","Convert ARW to DNG","Delete unused RAW/ARW-files","Delete ARW from memory card (attention)","Quit and exit")
+$OptionArray = @("Copy RAW/ARW-files from SD-Card","Copy RAW/ARW-files from SD-Card & Convert","Move RAW/ARW-files from SD-Card","Move RAW/ARW-files from SD-Card & Convert","Convert ARW to DNG","Delete unused RAW/ARW-files","Delete ARW from memory card (attention)","Quit and exit")
 $Banner = "
 DNGToolKit
 Latest version: https://github.com/filipnet/dngtoolkit
@@ -79,27 +79,7 @@ do {
 	Switch($MenuResult){
 		0{
 			# Copy RAW/ARW-files from SD-Card
-			Write-Host -BackgroundColor Blue "Copy RAW/ARW-files from SD-card"
-			if (!(Test-Path $src_volume_import)) {
-				Write-Host -ForegroundColor Red "Please insert SD-card to Volume $($src_volume_import)"
-			}else{
-				$arw_files = Get-ChildItem -Recurse "$src_volume_import\*.$src_extension" 
-				$c1 = 0
-				Clear-Host
-				foreach ($arw in $arw_files){
-					$c1++
-					Write-Progress -Id 0 -Activity 'Copy RAW/ARW-files from SD-Card to convertation directory' -Status "Processing $($c1) of $($arw_files.count)" -CurrentOperation $arw -PercentComplete (($c1/$arw_files.Count) * 100)
-					Start-Sleep -Milliseconds 200
-					$x = $arw.LastWriteTime.ToShortDateString()
-					$new_folder = Get-Date $x -Format yyyy-MM-dd
-					$dst_path = "$convert_root_path\$($new_folder)\"
-					if (!(Test-Path $dst_path)) {New-Item -Path $dst_path -ItemType Directory}
-					Copy-Item $($arw.FullName) -Destination $dst_path
-					Write-Host -NoNewline "Copying $($arw.FullName) to $($dst_path): "
-					Write-Host -ForegroundColor Green "OK"
-					Write-Progress -Activity 'Examining assemblies' -Completed
-				}
-			}
+			Transfer-SDtoDisk -ActionType Copy
 
 			[System.Media.SystemSounds]::Beep.Play();
 			Write-Host "Press any key to continue ....."
@@ -107,75 +87,44 @@ do {
 		}
 
 		1{
-			# Move RAW/ARW-files from SD-Card
-			Write-Host -BackgroundColor Blue "Move RAW/ARW-files from SD-card"
-			if (!(Test-Path $src_volume_import)) {
-				Write-Host -ForegroundColor Red "Please insert SD-card to Volume $($src_volume_import)"
-			}else{
-				$arw_files = Get-ChildItem -Recurse "$src_volume_import\*.$src_extension" 
-				$c1 = 0
-				Clear-Host
-				foreach ($arw in $arw_files){
-					$c1++
-					Write-Progress -Id 0 -Activity 'Move RAW/ARW-files from SD-Card to convertation directory' -Status "Processing $($c1) of $($arw_files.count)" -CurrentOperation $arw -PercentComplete (($c1/$arw_files.Count) * 100)
-					Start-Sleep -Milliseconds 200
-					$x = $arw.LastWriteTime.ToShortDateString()
-					$new_folder = Get-Date $x -Format yyyy-MM-dd
-					$dst_path = "$convert_root_path\$($new_folder)\"
-					if (!(Test-Path $dst_path)) {New-Item -Path $dst_path -ItemType Directory}
-					Move-Item $($arw.FullName) -Destination $dst_path
-					Write-Host -NoNewline "Moving $($arw.FullName) to $($dst_path): "
-					Write-Host -ForegroundColor Green "OK"
-					Write-Progress -Activity 'Examining assemblies' -Completed
-				}
-			}
+			# Copy RAW/ARW-files from SD-Card & Convert
+			Transfer-SDtoDisk -ActionType Copy
+			Convert-ARWtoDNG
 
 			[System.Media.SystemSounds]::Beep.Play();
 			Write-Host "Press any key to continue ....."
 			$x = $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 		}
 
-
 		2{
-			# Convert ARW to DNG
-			Write-Host -BackgroundColor Blue "Convert ARW to DNG"
-			$sourceFiles = Get-ChildItem -Path $convert_root_path -Recurse -Include *.$src_extension
-			if ($sourceFiles.count -eq 0) {
-				Write-Host -ForegroundColor Red "There are no files to convert in the directory $($convert_root_path)"
-				Write-Host "Press any key to continue ....."
-				$x = $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
-			}else{
-				$c1 = 0
-				Clear-Host
-				ForEach ($file in $sourceFiles) {
-					$c1++
-					Write-Progress -Id 0 -Activity 'Converting ARW to DNG' -Status "Processing $($c1) of $($sourceFiles.count)" -CurrentOperation $file -PercentComplete (($c1/$sourceFiles.Count) * 100)
-					Start-Sleep -Milliseconds 200
-					$fullArgs = $dng_base_args + """$file"""
-					$process = start-process $dng_exec_bin $fullArgs -Wait -PassThru
-					if ($process.ExitCode -eq 0)
-					{
-						Write-Host -NoNewline "Converted $($file): "
-						Write-Host -ForegroundColor Green "SUCCESS" 
-					}
-					else
-					{
-						Write-Host -NoNewline "Converted $($file): "
-						Write-Host -ForegroundColor Red "ERROR OCCURED, TRY AGAIN" 
-					}
-					Write-Progress -Activity 'Examining assemblies' -Completed
-				}
+			# Move RAW/ARW-files from SD-Card
+			Transfer-SDtoDisk -ActionType Move
 
-				Write-Host "Move subdirectories to Lighroom workplace directory" -ForegroundColor Cyan
-				Get-ChildItem -Path $convert_root_path -Recurse | Move-Item -Destination $workplace_root_path
-
-				[System.Media.SystemSounds]::Beep.Play();
-				Write-Host "Press any key to continue ....."
-				$x = $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
-			}
+			[System.Media.SystemSounds]::Beep.Play();
+			Write-Host "Press any key to continue ....."
+			$x = $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 		}
 
 		3{
+			# Move RAW/ARW-files from SD-Card & Convert
+			Transfer-SDtoDisk -ActionType Move
+			Convert-ARWtoDNG
+
+			[System.Media.SystemSounds]::Beep.Play();
+			Write-Host "Press any key to continue ....."
+			$x = $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+		}
+
+		4{
+			# Convert ARW to DNG
+			Convert-ARWtoDNG
+
+			[System.Media.SystemSounds]::Beep.Play();
+			Write-Host "Press any key to continue ....."
+			$x = $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+		}
+
+		5{
 			# Delete unused RAW/ARW-files
 			Write-Host -BackgroundColor Blue "Delete unused RAW/ARW-files"
 			$arw = Get-ChildItem -r -force -include *.arw -ErrorAction SilentlyContinue $workplace_root_path | Sort-Object -Unique
@@ -191,16 +140,16 @@ do {
 					remove-item $rawFile
 				}
 			}
-
 			Write-Host "Deleting empty folders" -ForegroundColor Red
 			Get-ChildItem $workplace_root_path -Recurse | Where-Object{$_.PSIsContainer -and !(Get-ChildItem $_.Fullname -Recurse | Where-Object{!$_.PSIsContainer})} | Format-Table Name,CreationTime,LastAccessTime,LastWriteTime -AutoSize
 			Remove-EmptyFolders $workplace_root_path
-
+			
 			[System.Media.SystemSounds]::Beep.Play();
 			Write-Host "Press any key to continue ....."
 			$x = $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 		}
-		4{
+
+		6{
 			# Delete ARW from memory card
 			Write-Host -BackgroundColor Blue "Delete RAW/ARW-files from memory card"
 			$confirmation = Read-Host -Prompt 'Are you really sure you would like to delete all photos from your memory card? Type YES and press enter'
@@ -222,13 +171,15 @@ do {
 			Write-Host "Press any key to continue ....."
 			$x = $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 		}
-		5{
+
+		7{
 			# Quit and exit
 			exit
 		}
+
 		Default{
 			# Quit and exit
 			exit
 		}
 	}
-} while ($MenuResult -ne 5)
+} while ($MenuResult -ne 7)

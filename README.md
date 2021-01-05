@@ -3,6 +3,11 @@
 
 Automatic conversion of multiple RAW/ARW files to DNG format with Adobe DNG Converter via PowerShell 
 
+## LATEST UPDATE
+New Features added for automation in 2021:
+* Copy RAW/ARW-files from SD-Card & Convert
+* Move RAW/ARW-files from SD-Card & Convert
+
 ## REQUIREMENTS
 
 - PowerShell version 3 and above
